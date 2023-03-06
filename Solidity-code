@@ -1,0 +1,69 @@
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity >= 0.8.0;
+
+contract Supplychain{
+
+ uint256 product_id=0;
+
+struct farmer {
+   
+    uint256 fid;
+    string fname;
+    string loc;
+   
+
+}
+struct merchant{
+    uint mid;
+    string mname;
+    string loc;
+}
+
+struct Product{
+    uint256 pid;
+    string name;
+    uint256 quantity;
+    string price;
+    string description;
+    string reqtemp;
+    string manufacturing;
+}
+Product[] public products_list;
+Product private productInfo;
+
+mapping (uint256 => Product) public products;
+
+function AddProduct(
+    string memory name,
+    string memory price,
+    string memory quantity,
+    string memory description,
+    string memory reqtemp,
+    string memory manufacturing) public payable
+{
+    productInfo=Product(product_id,name,price,description,reqtemp,manufacturing,block.timestamp);
+    products[product_id]=(productInfo);
+    products_list.push(productInfo);
+    product_id++;
+
+}
+function sendCoin(address receiver, uint amount, address sender) payable external returns(bool sufficient){
+        
+        
+        if (balances[sender] < amount) 
+        return false;
+        
+        balances[sender] -= amount;
+        balances[receiver] += amount;
+        
+                        
+        return true;
+        
+    }
+function getProducts() public view returns(Product[] memory){
+
+    return products_list ;
+}
+
+
+}
